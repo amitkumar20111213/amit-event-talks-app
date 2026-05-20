@@ -1,0 +1,237 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Conference Schedule</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #0056b3;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .search-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .search-container input[type="text"] {
+            width: 70%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .schedule {
+            display: grid;
+            gap: 20px;
+        }
+        .talk-card {
+            background-color: #e9f5ff;
+            border-left: 5px solid #007bff;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s;
+        }
+        .talk-card.break {
+            background-color: #f8d7da;
+            border-left-color: #dc3545;
+        }
+        .talk-card:hover {
+            transform: translateY(-3px);
+        }
+        .talk-card h2 {
+            color: #0056b3;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        .talk-card .time {
+            font-weight: bold;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        .talk-card .speakers {
+            font-style: italic;
+            color: #555;
+            margin-bottom: 5px;
+        }
+        .talk-card .category {
+            font-size: 0.9em;
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+        .talk-card .category span {
+            background-color: #e0f7fa;
+            padding: 3px 8px;
+            border-radius: 3px;
+            margin-right: 5px;
+            display: inline-block;
+            margin-top: 5px;
+        }
+        .talk-card p {
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tech Conference Schedule</h1>
+        <div class="search-container">
+            <input type="text" id="categorySearch" placeholder="Search by category (e.g., Web, AI, Frontend)">
+        </div>
+        <div id="schedule" class="schedule">
+            <!-- Schedule will be rendered here by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        const allTalks = [
+  {
+    "title": "Introduction to WebAssembly",
+    "speakers": [
+      "Dr. Evelyn Reed"
+    ],
+    "category": [
+      "Web",
+      "Performance"
+    ],
+    "duration": 60,
+    "description": "An overview of WebAssembly, its benefits, and how it's changing web development.",
+    "startTime": "10:00 AM",
+    "endTime": "11:00 AM"
+  },
+  {
+    "title": "Modern CSS Layouts",
+    "speakers": [
+      "Liam Foster"
+    ],
+    "category": [
+      "CSS",
+      "Frontend",
+      "Design"
+    ],
+    "duration": 60,
+    "description": "Explore the latest CSS layout techniques including Grid, Flexbox, and Container Queries.",
+    "startTime": "11:10 AM",
+    "endTime": "12:10 PM"
+  },
+  {
+    "title": "State Management in React with Hooks",
+    "speakers": [
+      "Sophia Chang",
+      "David Lee"
+    ],
+    "category": [
+      "React",
+      "Frontend",
+      "JavaScript"
+    ],
+    "duration": 60,
+    "description": "Deep dive into managing complex application state using React Hooks and Context API.",
+    "startTime": "12:20 PM",
+    "endTime": "01:20 PM"
+  },
+  {
+    "title": "Lunch Break",
+    "speakers": [],
+    "category": [],
+    "duration": 60,
+    "description": "Enjoy your lunch!",
+    "startTime": "01:30 PM",
+    "endTime": "02:30 PM",
+    "isBreak": true
+  },
+  {
+    "title": "Building Scalable Microservices with Node.js",
+    "speakers": [
+      "Omar Hassan"
+    ],
+    "category": [
+      "Node.js",
+      "Backend",
+      "Architecture"
+    ],
+    "duration": 60,
+    "description": "Best practices and patterns for developing resilient and scalable microservices using Node.js.",
+    "startTime": "02:40 PM",
+    "endTime": "03:40 PM"
+  },
+  {
+    "title": "AI in Everyday Applications",
+    "speakers": [
+      "Dr. Anya Sharma"
+    ],
+    "category": [
+      "AI",
+      "Innovation"
+    ],
+    "duration": 60,
+    "description": "A look at how AI is being integrated into common applications and its future potential.",
+    "startTime": "03:50 PM",
+    "endTime": "04:50 PM"
+  },
+  {
+    "title": "Demystifying Cloud Native Development",
+    "speakers": [
+      "Carlos Ramirez"
+    ],
+    "category": [
+      "Cloud Native",
+      "DevOps"
+    ],
+    "duration": 60,
+    "description": "Understanding the principles and tools behind cloud-native application development.",
+    "startTime": "05:00 PM",
+    "endTime": "06:00 PM"
+  }
+];
+
+        function renderSchedule(talksToRender) {
+            const scheduleDiv = document.getElementById('schedule');
+            scheduleDiv.innerHTML = ''; // Clear previous content
+
+            talksToRender.forEach(talk => {
+                const talkCard = document.createElement('div');
+                talkCard.classList.add('talk-card');
+                if (talk.isBreak) {
+                    talkCard.classList.add('break');
+                }
+
+                talkCard.innerHTML = `                    <div class="time">${talk.startTime} - ${talk.endTime}</div>                    <h2>${talk.title}</h2>                    ${talk.speakers.length > 0 ? `<div class="speakers">Speakers: ${talk.speakers.join(', ')}</div>` : ''}                    ${talk.category.length > 0 ? `<div class="category">Categories: ${talk.category.map(cat => `<span>${cat}</span>`).join('')}</div>` : ''}                    <p>${talk.description}</p>                `;
+                scheduleDiv.appendChild(talkCard);
+            });
+        }
+
+        function filterTalks() {
+            const searchTerm = document.getElementById('categorySearch').value.toLowerCase();
+            const filteredTalks = allTalks.filter(talk => {
+                if (talk.isBreak) return true; // Always show breaks
+                return talk.category.some(cat => cat.toLowerCase().includes(searchTerm));
+            });
+            renderSchedule(filteredTalks);
+        }
+
+        // Initial render
+        renderSchedule(allTalks);
+
+        // Event listener for search input
+        document.getElementById('categorySearch').addEventListener('keyup', filterTalks);
+    </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "amit-event-talks-app",
+  "version": "1.0.0",
+  "description": "A static website for a 1-day event filled with technical talks.",
+  "main": "generate-site.js",
+  "scripts": {
+    "generate": "node generate-site.js"
+  },
+  "keywords": [
+    "event",
+    "schedule",
+    "tech talks",
+    "static site"
+  ],
+  "author": "",
+  "license": "ISC"
+}
